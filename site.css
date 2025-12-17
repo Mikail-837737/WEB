@@ -1,0 +1,42 @@
+﻿body {
+    background: radial-gradient(circle at top, #1f2933, #0b0f19);
+    color: #f8f9fa;
+    min-height: 100vh;
+}
+
+main .container {
+    background-color: rgba(15, 23, 42, 0.92);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.6);
+}
+
+/* Başlıklar */
+h1, h2, h3 {
+    color: #fefefe;
+}
+
+/* Bootstrap tablolarını biraz daha şık yapalım */
+.table {
+    background-color: #111827;
+    color: #e5e7eb;
+    border-radius: 0.75rem;
+    overflow: hidden;
+}
+
+    .table thead {
+        background-color: #1f2937;
+    }
+
+.table-hover tbody tr:hover {
+    background-color: #0f172a;
+}
+
+/* Action butonları */
+.btn-primary {
+    border-radius: 999px;
+}
+
+.btn-sm {
+    border-radius: 999px;
+}
