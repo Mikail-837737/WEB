@@ -1,52 +1,61 @@
-﻿@model IEnumerable<WWW.Models.Appointment>
+﻿@model WWW.Models.FitnessViewModel
 
-@{
-    ViewData["Title"] = "Appointments";
-}
+<div class="container mt-5">
+    <h2>Yapay Zeka Fitness Danışmanı</h2>
+    <hr />
 
-<h1 class="mb-4">Appointments</h1>
+    <div class="row">
+        <div class="col-md-4">
+            @using (Html.BeginForm("Index", "Fitness", FormMethod.Post))
+            {
+                <div class="form-group">
+                    <label>Boy (cm)</label>
+                    @Html.TextBoxFor(m => m.Boy, new { @class = "form-control", type = "number", required = "required" })
+                </div>
+                <div class="form-group mt-2">
+                    <label>Kilo (kg)</label>
+                    @Html.TextBoxFor(m => m.Kilo, new { @class = "form-control", type = "number", required = "required" })
+                </div>
+                <div class="form-group mt-2">
+                    <label>Hedefiniz</label>
+                    @Html.DropDownListFor(m => m.Hedef, new SelectList(new[] { "Kilo Vermek", "Kas Yapmak", "Sıkılaşmak" }), "Seçiniz", new { @class = "form-control" })
+                </div>
+                <button type="submit" class="btn btn-primary mt-3 w-100" onclick="showLoading()">AI Önerisi Al</button>
 
-<a asp-action="Create" class="btn btn-primary mb-3">
-    + Create New Appointment
-</a>
+                <div id="loadingArea" style="display:none;" class="text-center mt-3">
+                    <div class="spinner-border text-primary" role="status"></div>
+                    <p>Yapay zeka planını hazırlıyor, lütfen bekleyin...</p>
+                </div>
 
-<table class="table table-striped table-hover align-middle">
-    <thead>
-        <tr>
-            <th>Member</th>
-            <th>Start</th>
-            <th>End</th>
-            <th>Price</th>
-            <th>Status</th>
-            <th>Gym</th>
-            <th>Trainer</th>
-            <th>Service</th>
-            <th class="text-end"></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.MemberId</td>
-                <td>@item.StartTime.ToString("dd.MM.yyyy HH:mm")</td>
-                <td>@item.EndTime.ToString("dd.MM.yyyy HH:mm")</td>
-                <td>@item.Price.ToString("0.00")</td>
-                <td>@item.Status</td>
-                <td>@item.Gym?.Name</td>
-                <td>@item.Trainer?.FullName</td>
-                <td>@item.Service?.Name</td>
-                <td class="text-end">
-                    <a asp-action="Edit" asp-route-id="@item.Id"
-                       class="btn btn-sm btn-outline-warning me-1">Edit</a>
-                    <a asp-action="Details" asp-route-id="@item.Id"
-                       class="btn btn-sm btn-outline-info me-1">Details</a>
-                    <a asp-action="Delete" asp-route-id="@item.Id"
-                       class="btn btn-sm btn-outline-danger">Delete</a>
-                </td>
-            </tr>
-        }
+                <script>
+                    function showLoading() {
+                        document.getElementById('loadingArea').style.display = 'block';
+                    }
+                </script>
+            }
+        </div>
 
-        }
-    </tbody>
-</table>
+        <div class="col-md-8">
+            @if (Model != null && !string.IsNullOrEmpty(Model.HataMesaji))
+            {
+                <div class="alert alert-warning">@Model.HataMesaji</div>
+            }
+
+            @if (Model != null && !string.IsNullOrEmpty(Model.Tavsiye))
+            {
+                <div class="card">
+                    <div class="card-body">
+                        <h4>Size Özel Plan</h4>
+                        <p style="white-space: pre-wrap;">@Model.Tavsiye</p>
+
+                        @if (!string.IsNullOrEmpty(Model.ResimBase64))
+                        {
+                            <h4 class="mt-4">Hedeflenen Görünüm</h4>
+                            <img src="@Model.ResimBase64" class="img-fluid rounded shadow" alt="AI Transformation" />
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
